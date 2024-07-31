@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  blossom:
+    image: ghcr.io/hzrd149/nostr-profile-cache:master
+    build: .
+    ports:
+      - 3000:3000
+    # enable debug logging
+    # environment:
+    #   DEBUG: "*"

@@ -1,0 +1,7 @@
+data
+.env
+node_modules
+.github
+database.json
+dist
+admin/node_modules
