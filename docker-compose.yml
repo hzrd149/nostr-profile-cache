@@ -6,6 +6,7 @@ services:
     build: .
     ports:
       - 3000:3000
-    # enable debug logging
-    # environment:
-    #   DEBUG: "*"
+    environment:
+      DEBUG: "*"
+      NOSTR_RELAYS: "wss://nostrue.com"
+      NOSTR_NSEC: "<service nsec>"

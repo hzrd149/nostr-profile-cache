@@ -11,7 +11,7 @@ RUN pnpm install
 COPY . .
 RUN pnpm build
 
-FROM node:20-alpine as main
+FROM node:20-alpine AS main
 WORKDIR /app
 
 ENV NODE_ENV=production

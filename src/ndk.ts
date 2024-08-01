@@ -1,5 +1,9 @@
-import NDK from "@nostr-dev-kit/ndk";
-import { NOSTR_RELAYS } from "./env.js";
+import NDK, { NDKEvent, NDKPrivateKeySigner } from "@nostr-dev-kit/ndk";
+import { bytesToHex } from "@noble/hashes/utils";
+import { EventTemplate } from "nostr-tools";
+import { SignedEvent } from "blossom-client-sdk";
+
+import { NOSTR_NSEC, NOSTR_RELAYS } from "./env.js";
 import logger from "./logger.js";
 
 const ndk = new NDK({
@@ -8,5 +12,17 @@ const ndk = new NDK({
 
 logger(`Connecting to ${NOSTR_RELAYS.length} relays`);
 await ndk.connect();
+
+ndk.signer = new NDKPrivateKeySigner(bytesToHex(NOSTR_NSEC));
+
+export async function signEventTemplate(template: EventTemplate): Promise<SignedEvent> {
+  const e = new NDKEvent(ndk);
+  e.kind = template.kind;
+  e.content = template.content;
+  e.tags = template.tags;
+  e.created_at = template.created_at;
+  await e.sign();
+  return e.rawEvent() as SignedEvent;
+}
 
 export default ndk;
