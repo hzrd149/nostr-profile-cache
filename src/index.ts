@@ -78,8 +78,11 @@ app.use(async (ctx, next) => {
   if (!user.profile) await user.fetchProfile();
   if (!user.profile) throw new HttpErrors.InternalServerError("Failed to find user profile");
 
-  const imageURL = user.profile!.image;
+  const imageURL: string | undefined = user.profile!.image || String(user.profile.picture);
   if (!imageURL) throw new HttpErrors.InternalServerError("User does not have a picture");
+
+  logger(imageURL, mime.getType(imageURL));
+
   const imageExt = extname(new URL(imageURL).pathname).replace(/^\./, "");
 
   // get size from query param
@@ -124,7 +127,7 @@ app.use(async (ctx, next) => {
 
   // resize image
   const [width, height] = size.split("x").map((v) => parseInt(v));
-  image = image.resize({ width, height, fit: "outside" });
+  image = image.resize({ width, height, fit: "cover" });
 
   // convert
   if (format !== imageExt) logger(`Converting image to ${ext}`);

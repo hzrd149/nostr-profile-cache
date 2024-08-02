@@ -17,6 +17,9 @@ function parseNsec(nsec: string) {
 const NOSTR_RELAYS = process.env.NOSTR_RELAYS?.split(",").map((r) => new URL(r)) ?? [];
 if (NOSTR_RELAYS.length === 0) throw new Error("Missing NOSTR_RELAYS");
 
+const READ_RELAYS = process.env.READ_RELAYS?.split(",").map((r) => new URL(r)) ?? [];
+if (READ_RELAYS.length === 0) throw new Error("Missing READ_RELAYS");
+
 const BLOSSOM_SERVERS = process.env.BLOSSOM_SERVERS?.split(",").map((r) => new URL(r)) ?? [];
 
 const DEFAULT_SIZE = process.env.DEFAULT_SIZE ? parseInt(process.env.DEFAULT_SIZE) : 6;
@@ -32,4 +35,4 @@ if (!process.env.NOSTR_NSEC) {
 
 const NOSTR_PUBKEY = getPublicKey(NOSTR_NSEC);
 
-export { NOSTR_RELAYS, BLOSSOM_SERVERS, DEFAULT_SIZE, DATA_DIR, NOSTR_NSEC, NOSTR_PUBKEY };
+export { NOSTR_RELAYS, BLOSSOM_SERVERS, DEFAULT_SIZE, DATA_DIR, NOSTR_NSEC, NOSTR_PUBKEY, READ_RELAYS };
